@@ -1,0 +1,1605 @@
+/* ==========================================================================
+   Journalify — Interactive Diary Feed, Timeline & Book View for Obsidian
+   Supports Light & Dark Mode across 6 Theme Editions + Desktop & Mobile
+   ========================================================================== */
+
+.workspace-leaf-content[data-type="journalify-feed-view"] .view-content.journalify-view-container {
+	padding: 0;
+	overflow: hidden;
+}
+
+.journalify-root {
+	--jf-bg: var(--background-primary);
+	--jf-bg-alt: var(--background-secondary);
+	--jf-card-bg: var(--background-primary-alt, var(--background-secondary));
+	--jf-border: var(--background-modifier-border);
+	--jf-text: var(--text-normal);
+	--jf-muted: var(--text-muted);
+	--jf-faint: var(--text-faint);
+	--jf-accent: var(--interactive-accent);
+	--jf-accent-hover: var(--interactive-accent-hover);
+	--jf-heading-font: var(--font-text);
+	--jf-body-font: var(--font-text);
+	--jf-card-radius: 14px;
+	--jf-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+
+	--jf-mood-5: #10b981;
+	--jf-mood-4: #3b82f6;
+	--jf-mood-3: #8b5cf6;
+	--jf-mood-2: #f59e0b;
+	--jf-mood-1: #ef4444;
+
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+	background: var(--jf-bg);
+	color: var(--jf-text);
+	font-family: var(--jf-body-font);
+}
+
+/* --------------------------------------------------------------------------
+   Theme Editions (Light & Dark Mode Aware)
+   -------------------------------------------------------------------------- */
+
+.theme-light .journalify-root[data-theme="cozy"] {
+	--jf-bg: #f7f2ea;
+	--jf-bg-alt: #efe8dc;
+	--jf-card-bg: #fffdf9;
+	--jf-border: #e5dccd;
+	--jf-text: #362f29;
+	--jf-muted: #786c60;
+	--jf-accent: #748e75;
+	--jf-heading-font: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+	--jf-card-radius: 18px;
+	--jf-card-shadow: 0 6px 22px rgba(90, 70, 50, 0.06);
+}
+
+.theme-dark .journalify-root[data-theme="cozy"] {
+	--jf-bg: #1c1916;
+	--jf-bg-alt: #25201c;
+	--jf-card-bg: #28231e;
+	--jf-border: #3b332c;
+	--jf-text: #ede4d8;
+	--jf-muted: #a99d8f;
+	--jf-accent: #88a689;
+	--jf-heading-font: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+	--jf-card-radius: 18px;
+}
+
+.theme-light .journalify-root[data-theme="minimal"] {
+	--jf-bg: #ffffff;
+	--jf-bg-alt: #f8fafc;
+	--jf-card-bg: #ffffff;
+	--jf-border: #e2e8f0;
+	--jf-card-radius: 0px;
+	--jf-card-shadow: none;
+}
+
+.theme-dark .journalify-root[data-theme="minimal"] {
+	--jf-bg: #111317;
+	--jf-bg-alt: #171a20;
+	--jf-card-bg: #111317;
+	--jf-border: #262b35;
+	--jf-card-radius: 0px;
+	--jf-card-shadow: none;
+}
+
+.theme-light .journalify-root[data-theme="scrapbook"] {
+	--jf-bg: #fbf8f1;
+	--jf-bg-alt: #f3ede0;
+	--jf-card-bg: rgba(255, 253, 248, 0.92);
+	--jf-border: #e4dac6;
+	--jf-accent: #d97757;
+	--jf-card-radius: 16px;
+}
+
+.theme-dark .journalify-root[data-theme="scrapbook"] {
+	--jf-bg: #1e1c19;
+	--jf-bg-alt: #272420;
+	--jf-card-bg: rgba(42, 39, 34, 0.94);
+	--jf-border: #3d3830;
+	--jf-accent: #e08b6d;
+	--jf-card-radius: 16px;
+}
+
+.journalify-root[data-theme="scrapbook"] .journalify-stream-host {
+	background-image: radial-gradient(var(--jf-border) 1.25px, transparent 1.25px);
+	background-size: 20px 20px;
+}
+
+.theme-light .journalify-root[data-theme="editorial"] {
+	--jf-bg: #f9f7f3;
+	--jf-bg-alt: #f0ede6;
+	--jf-card-bg: #fcfbf8;
+	--jf-border: #2a2825;
+	--jf-heading-font: "Playfair Display", "Didot", "Bodoni MT", Georgia, serif;
+	--jf-card-radius: 4px;
+}
+
+.theme-dark .journalify-root[data-theme="editorial"] {
+	--jf-bg: #161615;
+	--jf-bg-alt: #1e1e1c;
+	--jf-card-bg: #1c1c1a;
+	--jf-border: #4a4843;
+	--jf-heading-font: "Playfair Display", "Didot", Georgia, serif;
+	--jf-card-radius: 4px;
+}
+
+.theme-light .journalify-root[data-theme="typewriter"] {
+	--jf-bg: #f4f1ea;
+	--jf-bg-alt: #eae5da;
+	--jf-card-bg: #f9f7f2;
+	--jf-border: #2e2c28;
+	--jf-heading-font: "American Typewriter", "Courier Prime", "Courier New", ui-monospace, monospace;
+	--jf-card-radius: 3px;
+	--jf-card-shadow: none;
+}
+
+.theme-dark .journalify-root[data-theme="typewriter"] {
+	--jf-bg: #191816;
+	--jf-bg-alt: #22211e;
+	--jf-card-bg: #201f1c;
+	--jf-border: #5c5850;
+	--jf-heading-font: "American Typewriter", "Courier Prime", "Courier New", ui-monospace, monospace;
+	--jf-card-radius: 3px;
+	--jf-card-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Top Toolbar & Filter Bar
+   -------------------------------------------------------------------------- */
+
+.journalify-topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 10px 18px;
+	border-bottom: 1px solid var(--jf-border);
+	background: var(--jf-bg-alt);
+	flex-shrink: 0;
+	flex-wrap: wrap;
+}
+
+.journalify-topbar-left {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 650;
+	font-size: 1.02rem;
+}
+
+.journalify-brand-icon {
+	display: inline-flex;
+	color: var(--jf-accent);
+}
+
+.journalify-profile-select {
+	font-weight: 600;
+	border-radius: 8px;
+}
+
+.journalify-layout-segmented {
+	display: inline-flex;
+	background: var(--jf-bg);
+	border: 1px solid var(--jf-border);
+	border-radius: 9px;
+	padding: 2px;
+	gap: 2px;
+}
+
+.journalify-root button.journalify-seg-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 10px;
+	border: none;
+	border-radius: 7px;
+	background: transparent;
+	color: var(--jf-muted);
+	font-size: 0.84rem;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-root button.journalify-seg-btn:hover {
+	color: var(--jf-text);
+}
+
+.journalify-root button.journalify-seg-btn.is-active {
+	background: var(--jf-accent);
+	color: var(--text-on-accent, #ffffff);
+	font-weight: 600;
+}
+
+.journalify-seg-icon {
+	display: inline-flex;
+	width: 14px;
+	height: 14px;
+}
+
+.journalify-topbar-right {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.journalify-search-wrap {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.journalify-search-icon {
+	position: absolute;
+	left: 9px;
+	display: inline-flex;
+	color: var(--jf-faint);
+	pointer-events: none;
+}
+
+.journalify-search-icon svg {
+	width: 14px;
+	height: 14px;
+}
+
+.journalify-root input.journalify-search-input {
+	padding-left: 28px;
+	height: 30px;
+	width: 190px;
+	border-radius: 8px;
+	font-size: 0.85rem;
+}
+
+.journalify-filter-bar {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	padding: 8px 18px;
+	background: var(--jf-bg-alt);
+	border-bottom: 1px solid var(--jf-border);
+	flex-shrink: 0;
+}
+
+.journalify-filter-select {
+	height: 28px;
+	font-size: 0.82rem;
+	border-radius: 7px;
+}
+
+.journalify-root button.journalify-filter-chip {
+	height: 28px;
+	padding: 0 10px;
+	border-radius: 999px;
+	border: 1px solid var(--jf-border);
+	background: var(--jf-bg);
+	color: var(--jf-muted);
+	font-size: 0.8rem;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-root button.journalify-filter-chip.is-active {
+	background: var(--jf-accent);
+	border-color: var(--jf-accent);
+	color: var(--text-on-accent, #ffffff);
+	font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Workspace Split: Main Stream + Responsive Inspector
+   -------------------------------------------------------------------------- */
+
+.journalify-workspace-body {
+	display: flex;
+	flex: 1;
+	min-height: 0;
+	position: relative;
+	overflow: hidden;
+}
+
+.journalify-stream-host {
+	flex: 1;
+	min-width: 0;
+	overflow-y: auto;
+	padding: 24px 24px 56px;
+}
+
+.journalify-inspector-host {
+	width: 310px;
+	flex-shrink: 0;
+	border-left: 1px solid var(--jf-border);
+	background: var(--jf-bg-alt);
+	overflow-y: auto;
+	display: none;
+}
+
+.journalify-root.has-inspector-open .journalify-inspector-host {
+	display: block;
+}
+
+.journalify-root.is-narrow .journalify-inspector-host {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: min(320px, 90vw);
+	z-index: 25;
+	box-shadow: -8px 0 28px rgba(0, 0, 0, 0.22);
+}
+
+.journalify-root.is-narrow .journalify-stream-host {
+	padding: 14px 12px 44px;
+}
+
+.journalify-root.is-narrow .journalify-hide-xs,
+.journalify-root.is-narrow .journalify-seg-label {
+	display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Feed & Cards
+   -------------------------------------------------------------------------- */
+
+.journalify-feed-inner {
+	max-width: 780px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.journalify-cards-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.journalify-card {
+	position: relative;
+	background: var(--jf-card-bg);
+	border: 1px solid var(--jf-border);
+	border-radius: var(--jf-card-radius);
+	padding: 20px 24px;
+	box-shadow: var(--jf-card-shadow);
+	transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.journalify-root[data-theme="minimal"] .journalify-card {
+	border: none;
+	border-bottom: 1px solid var(--jf-border);
+	padding: 24px 4px;
+}
+
+.journalify-root[data-theme="editorial"] .journalify-card {
+	border: none;
+	border-top: 2px solid var(--jf-border);
+	padding: 26px 18px;
+}
+
+.journalify-root .journalify-card.is-highlighted-pulse {
+	border-color: var(--jf-accent);
+	box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.28);
+}
+
+.journalify-card-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 8px;
+	flex-wrap: wrap;
+}
+
+.journalify-card-meta-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.journalify-card-date-heading {
+	margin: 0;
+	font-family: var(--jf-heading-font);
+	font-size: 1.24rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--jf-text);
+}
+
+.journalify-root[data-theme="editorial"] .journalify-card-date-heading {
+	font-size: 1.72rem;
+	letter-spacing: -0.015em;
+}
+
+.journalify-card-tools {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	opacity: 0.45;
+	transition: opacity 0.15s ease;
+}
+
+.journalify-card:hover .journalify-card-tools {
+	opacity: 1;
+}
+
+.journalify-root button.journalify-icon-btn,
+.journalify-inspector button.journalify-icon-btn,
+.journalify-lightbox-content button.journalify-icon-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border-radius: 7px;
+	border: 1px solid transparent;
+	background: transparent;
+	color: var(--jf-muted, var(--text-muted));
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-root button.journalify-icon-btn:hover,
+.journalify-inspector button.journalify-icon-btn:hover,
+.journalify-lightbox-content button.journalify-icon-btn:hover {
+	background: var(--background-modifier-hover);
+	color: var(--jf-text, var(--text-normal));
+}
+
+.journalify-root button.journalify-icon-btn.is-active {
+	color: #f59e0b;
+}
+
+.journalify-topbar button.journalify-icon-btn.is-active {
+	color: var(--jf-accent);
+	background: var(--background-modifier-hover);
+}
+
+/* --------------------------------------------------------------------------
+   Minimal Theme Two-Column Structure (`18 NOV · MI`)
+   -------------------------------------------------------------------------- */
+
+.journalify-minimal-columns {
+	display: grid;
+	grid-template-columns: 78px minmax(0, 1fr);
+	gap: 20px;
+}
+
+.journalify-minimal-date-col {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding-top: 2px;
+}
+
+.journalify-minimal-day-num {
+	font-size: 2.15rem;
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.03em;
+}
+
+.journalify-minimal-month-wd {
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	color: var(--jf-muted);
+	margin-top: 4px;
+}
+
+.journalify-minimal-mood {
+	font-size: 1.2rem;
+	margin-top: 10px;
+}
+
+.journalify-minimal-weather {
+	font-size: 0.75rem;
+	color: var(--jf-muted);
+	margin-top: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Typewriter Theme Tabular Stamp Header
+   -------------------------------------------------------------------------- */
+
+.journalify-typewriter-stamp {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+	border: 1.5px solid var(--jf-border);
+	margin-bottom: 14px;
+	font-family: var(--jf-heading-font);
+}
+
+.journalify-stamp-cell {
+	padding: 6px 10px;
+	border-right: 1px solid var(--jf-border);
+	border-bottom: 1px solid var(--jf-border);
+}
+
+.journalify-stamp-cell.is-clickable {
+	cursor: pointer;
+}
+
+.journalify-stamp-cell.is-clickable:hover {
+	background: var(--background-modifier-hover);
+}
+
+.journalify-stamp-label {
+	font-size: 0.66rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: var(--jf-muted);
+}
+
+.journalify-stamp-value {
+	font-size: 0.84rem;
+	font-weight: 600;
+	margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Metadata Pills & Hover Ghost Chips
+   -------------------------------------------------------------------------- */
+
+.journalify-meta-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 12px;
+	min-height: 24px;
+}
+
+.journalify-root button.journalify-meta-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	height: 26px;
+	padding: 0 10px;
+	border-radius: 999px;
+	border: 1px solid var(--jf-border);
+	background: var(--jf-bg-alt);
+	color: var(--jf-text);
+	font-size: 0.8rem;
+	font-weight: 500;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-root button.journalify-meta-pill:hover {
+	border-color: var(--jf-accent);
+}
+
+.journalify-root button.journalify-mood-pill.mood-score-5 {
+	border-color: rgba(16, 185, 129, 0.45);
+	background: rgba(16, 185, 129, 0.12);
+}
+.journalify-root button.journalify-mood-pill.mood-score-4 {
+	border-color: rgba(59, 130, 246, 0.45);
+	background: rgba(59, 130, 246, 0.12);
+}
+.journalify-root button.journalify-mood-pill.mood-score-3 {
+	border-color: rgba(139, 92, 246, 0.45);
+	background: rgba(139, 92, 246, 0.12);
+}
+.journalify-root button.journalify-mood-pill.mood-score-2 {
+	border-color: rgba(245, 158, 11, 0.45);
+	background: rgba(245, 158, 11, 0.12);
+}
+.journalify-root button.journalify-mood-pill.mood-score-1 {
+	border-color: rgba(239, 68, 68, 0.45);
+	background: rgba(239, 68, 68, 0.12);
+}
+
+.journalify-root button.journalify-ghost-chip {
+	height: 24px;
+	padding: 0 9px;
+	border-radius: 999px;
+	border: 1px dashed var(--jf-border);
+	background: transparent;
+	color: var(--jf-muted);
+	font-size: 0.76rem;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-root button.journalify-ghost-chip:hover {
+	border-style: solid;
+	border-color: var(--jf-accent);
+	color: var(--jf-text);
+}
+
+@media (hover: hover) {
+	.journalify-hover-reveal {
+		opacity: 0;
+		transition: opacity 0.15s ease;
+	}
+	.journalify-card:hover .journalify-hover-reveal {
+		opacity: 0.85;
+	}
+}
+
+/* --------------------------------------------------------------------------
+   Markdown Prose, Interactive Tasks & Editorial Drop-Cap
+   -------------------------------------------------------------------------- */
+
+.journalify-card-content-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.journalify-markdown-rendered {
+	font-size: 0.96rem;
+	line-height: 1.65;
+	word-break: break-word;
+}
+
+.journalify-markdown-rendered p:first-child {
+	margin-top: 0;
+}
+
+.journalify-markdown-rendered p:last-child {
+	margin-bottom: 0;
+}
+
+.journalify-markdown-rendered.has-drop-cap > p:first-of-type::first-letter {
+	float: left;
+	font-family: var(--jf-heading-font);
+	font-size: 3.1rem;
+	line-height: 0.86;
+	padding-right: 10px;
+	padding-top: 4px;
+	font-weight: 700;
+}
+
+.journalify-root[data-theme="scrapbook"] .journalify-markdown-rendered mark {
+	background: rgba(250, 204, 21, 0.36);
+	padding: 1px 4px;
+	border-radius: 4px;
+}
+
+.journalify-markdown-rendered input.task-list-item-checkbox {
+	cursor: pointer;
+}
+
+.journalify-root button.journalify-fold-toggle {
+	margin-top: 8px;
+	padding: 4px 10px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	border-radius: 6px;
+	border: 1px solid var(--jf-border);
+	background: var(--jf-bg-alt);
+	color: var(--jf-accent);
+	cursor: pointer;
+	box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Inline Body Editor & Quick-Start Today Card
+   -------------------------------------------------------------------------- */
+
+.journalify-quickstart-card {
+	border-style: dashed;
+	border-width: 1.5px;
+}
+
+.journalify-quickstart-title-group {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.journalify-quickstart-pill {
+	padding: 2px 9px;
+	border-radius: 999px;
+	background: var(--jf-accent);
+	color: var(--text-on-accent, #ffffff);
+	font-size: 0.74rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.journalify-inline-textarea {
+	width: 100%;
+	min-height: 92px;
+	padding: 10px 12px;
+	border-radius: 10px;
+	border: 1px solid var(--jf-border);
+	background: var(--jf-bg);
+	color: var(--jf-text);
+	font-family: var(--font-text);
+	font-size: 0.94rem;
+	line-height: 1.55;
+	resize: vertical;
+}
+
+.journalify-autoheight-textarea {
+	height: var(--jf-ta-height, auto);
+}
+
+.journalify-inline-textarea:focus {
+	border-color: var(--jf-accent);
+	outline: none;
+}
+
+.journalify-quickstart-footer,
+.journalify-inline-editor-bar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.journalify-quickstart-footer {
+	justify-content: space-between;
+}
+
+.journalify-hidden-file-input {
+	display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Adaptive Photo Gallery Grid (1 / 2 / 3 / 4+ & Polaroid / Film-strip styles)
+   -------------------------------------------------------------------------- */
+
+.journalify-gallery {
+	display: grid;
+	gap: 8px;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.journalify-gallery.count-1 {
+	grid-template-columns: 1fr;
+}
+
+.journalify-gallery.count-2 {
+	grid-template-columns: 1fr 1fr;
+}
+
+.journalify-gallery.count-3 {
+	grid-template-columns: 1.35fr 1fr;
+	grid-template-rows: 130px 130px;
+}
+
+.journalify-gallery.count-3 .journalify-gallery-tile:first-child {
+	grid-row: 1 / span 2;
+}
+
+.journalify-gallery.count-4plus {
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 150px 150px;
+}
+
+.journalify-gallery-tile {
+	position: relative;
+	overflow: hidden;
+	border-radius: 8px;
+	cursor: zoom-in;
+	background: var(--jf-bg-alt);
+	min-height: 150px;
+	max-height: 360px;
+}
+
+.journalify-gallery-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.22s ease;
+}
+
+.journalify-gallery-tile:hover .journalify-gallery-img {
+	transform: scale(1.025);
+}
+
+.journalify-gallery-more-badge {
+	position: absolute;
+	inset: 0;
+	background: rgba(15, 18, 25, 0.62);
+	color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.15rem;
+	font-weight: 700;
+}
+
+/* Scrapbook Polaroid Frames + Washi Tape */
+.journalify-root[data-theme="scrapbook"] .journalify-gallery {
+	overflow: visible;
+	gap: 16px;
+	padding: 8px 4px;
+}
+
+.journalify-root[data-theme="scrapbook"] .journalify-gallery-tile {
+	background: #ffffff;
+	color: #2c2824;
+	padding: 10px 10px 30px;
+	border-radius: 4px;
+	box-shadow: 0 5px 16px rgba(0, 0, 0, 0.14);
+	overflow: visible;
+}
+
+.journalify-root[data-theme="scrapbook"] .journalify-gallery-tile:nth-child(odd) {
+	transform: rotate(-1.2deg);
+}
+
+.journalify-root[data-theme="scrapbook"] .journalify-gallery-tile:nth-child(even) {
+	transform: rotate(1.1deg);
+}
+
+.journalify-root[data-theme="scrapbook"] .journalify-gallery-tile::before {
+	content: "";
+	position: absolute;
+	top: -8px;
+	left: 50%;
+	transform: translateX(-50%) rotate(-2deg);
+	width: 64px;
+	height: 18px;
+	background: rgba(235, 168, 152, 0.62);
+	border-radius: 2px;
+	z-index: 2;
+}
+
+.journalify-tile-caption {
+	font-size: 0.76rem;
+	text-align: center;
+	margin-top: 6px;
+	opacity: 0.85;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Typewriter Contact-Sheet / 35mm Film Strip */
+.journalify-root[data-theme="typewriter"] .journalify-gallery {
+	background: #141413;
+	padding: 14px 10px;
+	border-radius: 4px;
+	border-top: 6px dashed #dcd6c8;
+	border-bottom: 6px dashed #dcd6c8;
+}
+
+.journalify-root[data-theme="typewriter"] .journalify-tile-caption {
+	color: #e5e0d3;
+	font-family: var(--jf-heading-font);
+}
+
+/* Audio & Video Players */
+.journalify-av-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.journalify-audio-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 12px;
+	border-radius: 10px;
+	background: var(--jf-bg-alt);
+	border: 1px solid var(--jf-border);
+}
+
+.journalify-audio-label {
+	font-size: 0.82rem;
+	font-weight: 500;
+	max-width: 160px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.journalify-audio-player {
+	flex: 1;
+	height: 32px;
+}
+
+.journalify-video-player {
+	width: 100%;
+	max-height: 360px;
+	border-radius: 10px;
+	background: #000000;
+}
+
+/* Footer Tags */
+.journalify-card-footer {
+	margin-top: 14px;
+	padding-top: 10px;
+	border-top: 1px solid var(--jf-border);
+}
+
+.journalify-tag-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.journalify-root button.journalify-tag-pill {
+	padding: 2px 9px;
+	border-radius: 999px;
+	border: none;
+	background: var(--jf-bg-alt);
+	color: var(--jf-accent);
+	font-size: 0.77rem;
+	font-weight: 500;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-root button.journalify-tag-pill:hover {
+	filter: brightness(0.95);
+}
+
+/* --------------------------------------------------------------------------
+   Vertical Timeline Layout (`layout="timeline"`)
+   -------------------------------------------------------------------------- */
+
+.journalify-timeline-row {
+	display: grid;
+	grid-template-columns: 96px minmax(0, 1fr);
+	gap: 16px;
+	position: relative;
+}
+
+.journalify-timeline-axis {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 10px;
+}
+
+.journalify-timeline-axis::after {
+	content: "";
+	position: absolute;
+	top: 48px;
+	bottom: -24px;
+	width: 2px;
+	background: var(--jf-border);
+}
+
+.journalify-timeline-row:last-child .journalify-timeline-axis::after {
+	display: none;
+}
+
+.journalify-timeline-node {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: var(--jf-card-bg);
+	border: 2px solid var(--jf-accent);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.15rem;
+	z-index: 1;
+}
+
+.journalify-timeline-date-label {
+	text-align: center;
+	margin-top: 6px;
+}
+
+.journalify-timeline-day {
+	font-size: 0.8rem;
+	font-weight: 700;
+}
+
+.journalify-timeline-sub {
+	font-size: 0.7rem;
+	color: var(--jf-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Two-Page Book Spread Layout (`layout="book"`)
+   -------------------------------------------------------------------------- */
+
+.journalify-book-stage {
+	max-width: 1120px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.journalify-book-spread {
+	position: relative;
+	display: grid;
+	background: var(--jf-bg-alt);
+	padding: 10px;
+	border-radius: 18px;
+	border: 1px solid var(--jf-border);
+	box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
+	min-height: 540px;
+}
+
+.journalify-book-spread.is-two-page {
+	grid-template-columns: 1fr 1fr;
+	gap: 2px;
+}
+
+.journalify-book-spread.is-two-page::after {
+	content: "";
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	left: 50%;
+	width: 26px;
+	transform: translateX(-50%);
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(0, 0, 0, 0.08) 48%,
+		rgba(0, 0, 0, 0.14) 50%,
+		rgba(0, 0, 0, 0.08) 52%,
+		transparent 100%
+	);
+	pointer-events: none;
+}
+
+.journalify-book-page {
+	display: flex;
+	flex-direction: column;
+}
+
+.journalify-book-page > .journalify-card {
+	flex: 1;
+	border-radius: 10px;
+	box-shadow: none;
+}
+
+.journalify-book-ribbon {
+	position: absolute;
+	top: -4px;
+	right: 22px;
+	width: 26px;
+	height: 36px;
+	background: #dc2626;
+	color: #fde047;
+	border-radius: 0 0 6px 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.journalify-book-scrubber {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.journalify-book-range-pill {
+	padding: 5px 14px;
+	border-radius: 999px;
+	background: var(--jf-card-bg);
+	border: 1px solid var(--jf-border);
+	font-size: 0.84rem;
+	font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Shared Inspector Panel (Calendar, SVG Mood Chart, Media Wall, On This Day)
+   -------------------------------------------------------------------------- */
+
+.journalify-inspector {
+	--jf-mood-5: #10b981;
+	--jf-mood-4: #3b82f6;
+	--jf-mood-3: #8b5cf6;
+	--jf-mood-2: #f59e0b;
+	--jf-mood-1: #ef4444;
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.journalify-inspector-statsbar {
+	display: flex;
+	gap: 8px;
+}
+
+.journalify-stat-pill {
+	flex: 1;
+	text-align: center;
+	padding: 6px 8px;
+	border-radius: 9px;
+	background: var(--jf-card-bg, var(--background-primary));
+	border: 1px solid var(--jf-border, var(--background-modifier-border));
+	font-size: 0.78rem;
+	font-weight: 600;
+}
+
+.journalify-inspector-tabs {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 3px;
+	padding: 3px;
+	border-radius: 9px;
+	background: var(--jf-card-bg, var(--background-primary));
+	border: 1px solid var(--jf-border, var(--background-modifier-border));
+}
+
+.journalify-inspector button.journalify-inspector-tab {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 5px 4px;
+	border: none;
+	border-radius: 7px;
+	background: transparent;
+	color: var(--jf-muted, var(--text-muted));
+	font-size: 0.76rem;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-inspector button.journalify-inspector-tab.is-active {
+	background: var(--jf-accent, var(--interactive-accent));
+	color: var(--text-on-accent, #ffffff);
+	font-weight: 600;
+}
+
+.journalify-tab-icon svg {
+	width: 12px;
+	height: 12px;
+}
+
+.journalify-inspector-body {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.journalify-inspector-card {
+	background: var(--jf-card-bg, var(--background-primary));
+	border: 1px solid var(--jf-border, var(--background-modifier-border));
+	border-radius: 12px;
+	padding: 12px;
+}
+
+.journalify-inspector-heading {
+	font-size: 0.82rem;
+	font-weight: 700;
+	margin-bottom: 8px;
+	color: var(--jf-muted, var(--text-muted));
+}
+
+/* Monthly Calendar */
+.journalify-cal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.journalify-cal-title {
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.journalify-cal-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 3px;
+	text-align: center;
+}
+
+.journalify-cal-wd {
+	font-size: 0.68rem;
+	font-weight: 600;
+	color: var(--jf-faint, var(--text-faint));
+	padding-bottom: 4px;
+}
+
+.journalify-inspector button.journalify-cal-cell {
+	position: relative;
+	height: 32px;
+	padding: 2px 0;
+	border: none;
+	border-radius: 7px;
+	background: transparent;
+	color: var(--jf-muted, var(--text-muted));
+	font-size: 0.78rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-cal-cell.is-empty {
+	pointer-events: none;
+}
+
+.journalify-inspector button.journalify-cal-cell:hover {
+	background: var(--background-modifier-hover);
+	color: var(--jf-text, var(--text-normal));
+}
+
+.journalify-inspector button.journalify-cal-cell.has-entry {
+	color: var(--jf-text, var(--text-normal));
+	font-weight: 650;
+}
+
+.journalify-inspector button.journalify-cal-cell.is-today {
+	outline: 1.5px solid var(--jf-accent, var(--interactive-accent));
+}
+
+.journalify-cal-dot {
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: var(--jf-accent, var(--interactive-accent));
+	margin-top: 2px;
+}
+
+.journalify-cal-dot.mood-score-5,
+.journalify-mood-seg.mood-score-5 {
+	background: var(--jf-mood-5);
+}
+.journalify-cal-dot.mood-score-4,
+.journalify-mood-seg.mood-score-4 {
+	background: var(--jf-mood-4);
+}
+.journalify-cal-dot.mood-score-3,
+.journalify-mood-seg.mood-score-3 {
+	background: var(--jf-mood-3);
+}
+.journalify-cal-dot.mood-score-2,
+.journalify-mood-seg.mood-score-2 {
+	background: var(--jf-mood-2);
+}
+.journalify-cal-dot.mood-score-1,
+.journalify-mood-seg.mood-score-1 {
+	background: var(--jf-mood-1);
+}
+
+.journalify-cal-mini-emoji {
+	font-size: 0.65rem;
+	line-height: 1;
+}
+
+/* SVG Mood Trend & Stacked Balance Bar */
+.journalify-mood-svg {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+.journalify-chart-gridline {
+	stroke: var(--jf-border, var(--background-modifier-border));
+	stroke-dasharray: 3 3;
+	stroke-width: 1;
+}
+
+.journalify-chart-area {
+	fill: var(--jf-accent, var(--interactive-accent));
+	opacity: 0.16;
+}
+
+.journalify-chart-line {
+	fill: none;
+	stroke: var(--jf-accent, var(--interactive-accent));
+	stroke-width: 2.2;
+	stroke-linecap: round;
+}
+
+.journalify-chart-dot {
+	fill: var(--jf-accent, var(--interactive-accent));
+}
+
+.journalify-mood-balance-bar {
+	display: flex;
+	height: 8px;
+	border-radius: 999px;
+	overflow: hidden;
+	gap: 2px;
+	margin-top: 8px;
+}
+
+.journalify-mood-seg {
+	flex-grow: var(--jf-seg-grow, 1);
+}
+
+/* Media Wall & On This Day */
+.journalify-media-wall-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 6px;
+}
+
+.journalify-media-thumb {
+	aspect-ratio: 1 / 1;
+	border-radius: 7px;
+	overflow: hidden;
+	cursor: pointer;
+	background: var(--jf-bg-alt, var(--background-secondary));
+}
+
+.journalify-media-thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.journalify-otd-item {
+	padding: 8px 10px;
+	border-radius: 8px;
+	background: var(--jf-bg-alt, var(--background-secondary));
+	cursor: pointer;
+	margin-top: 6px;
+}
+
+.journalify-otd-item:hover {
+	outline: 1px solid var(--jf-accent, var(--interactive-accent));
+}
+
+.journalify-otd-topline {
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.76rem;
+	font-weight: 700;
+	color: var(--jf-accent, var(--interactive-accent));
+	margin-bottom: 4px;
+}
+
+.journalify-otd-snippet {
+	font-size: 0.78rem;
+	color: var(--jf-muted, var(--text-muted));
+	line-height: 1.4;
+}
+
+.journalify-inspector-empty {
+	font-size: 0.8rem;
+	color: var(--jf-muted, var(--text-muted));
+	padding: 8px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Floating Metadata Popovers & Lightbox Modal
+   -------------------------------------------------------------------------- */
+
+.journalify-popover {
+	position: fixed;
+	top: var(--jf-pop-top, 12px);
+	left: var(--jf-pop-left, 12px);
+	z-index: 9999;
+	width: 284px;
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 12px;
+	padding: 12px;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.journalify-popover-title {
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: var(--text-muted);
+}
+
+.journalify-emoji-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 5px;
+}
+
+.journalify-popover button.journalify-emoji-option {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+	padding: 6px 2px;
+	height: auto;
+	border-radius: 8px;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-popover button.journalify-emoji-option:hover,
+.journalify-popover button.journalify-emoji-option.is-selected {
+	border-color: var(--interactive-accent);
+}
+
+.journalify-emoji-glyph {
+	font-size: 1.25rem;
+}
+
+.journalify-emoji-caption {
+	font-size: 0.64rem;
+	color: var(--text-muted);
+}
+
+.journalify-popover-input-row {
+	display: flex;
+	gap: 6px;
+}
+
+.journalify-popover-input {
+	flex: 1;
+	min-width: 0;
+}
+
+.journalify-weather-strip,
+.journalify-suggestion-chips,
+.journalify-geo-candidates {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+
+.journalify-geo-candidates {
+	margin-bottom: 12px;
+}
+
+.journalify-popover button.journalify-weather-chip,
+.journalify-popover button.journalify-suggestion-chip,
+.journalify-geo-candidates button.journalify-suggestion-chip {
+	padding: 3px 8px;
+	height: auto;
+	border-radius: 999px;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	font-size: 0.76rem;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.journalify-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 5px 12px;
+	border-radius: 8px;
+	font-size: 0.83rem;
+	cursor: pointer;
+}
+
+.journalify-root button.journalify-btn-primary,
+.journalify-popover button.journalify-btn-primary,
+.journalify-popover button.journalify-btn-accent,
+.journalify-dayone-modal button.journalify-btn-primary {
+	background: var(--interactive-accent);
+	color: var(--text-on-accent, #ffffff);
+	border: none;
+}
+
+.journalify-popover-fullbtn {
+	width: 100%;
+}
+
+.journalify-btn-clear {
+	background: transparent;
+	color: var(--text-error);
+	border: 1px solid var(--background-modifier-border);
+}
+
+/* Lightbox Modal */
+.modal.journalify-lightbox-modal {
+	width: min(92vw, 1080px);
+	max-width: 92vw;
+}
+
+.journalify-lightbox-content {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.journalify-lightbox-topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.journalify-lightbox-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.journalify-lightbox-stage {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 62vh;
+	max-height: 76vh;
+	background: rgba(0, 0, 0, 0.85);
+	border-radius: 10px;
+	overflow: auto;
+}
+
+.journalify-lightbox-img {
+	max-width: 100%;
+	max-height: 74vh;
+	object-fit: contain;
+	cursor: zoom-in;
+	transition: transform 0.2s ease;
+}
+
+.journalify-lightbox-img.is-zoomed {
+	transform: scale(1.85);
+	cursor: zoom-out;
+}
+
+.journalify-lightbox-nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 3;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.18);
+	color: #ffffff;
+	border: none;
+	cursor: pointer;
+}
+
+.journalify-lightbox-prev {
+	left: 12px;
+}
+
+.journalify-lightbox-next {
+	right: 12px;
+}
+
+.journalify-lightbox-caption {
+	text-align: center;
+	font-size: 0.86rem;
+	color: var(--text-muted);
+}
+
+.journalify-lightbox-caption.is-hidden {
+	display: none;
+}
+
+.journalify-empty-state {
+	text-align: center;
+	padding: 48px 20px;
+	color: var(--jf-muted);
+}
+
+.journalify-scroll-sentinel {
+	height: 24px;
+}
+
+.journalify-settings-lead {
+	color: var(--text-muted);
+	margin-bottom: 18px;
+}
+
+.journalify-modal-footer {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 14px;
+}
+
+.journalify-import-status {
+	font-size: 0.85rem;
+	color: var(--text-muted);
+	margin-top: 8px;
+}

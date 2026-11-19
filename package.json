@@ -1,0 +1,39 @@
+{
+	"name": "obsidian-journalify",
+	"version": "0.1.0",
+	"description": "Interactive diary feed, vertical timeline, and two-page book view for Obsidian daily notes with mood & weather tracking, media galleries, and Day One import",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"test": "node --test test/journalify.test.mjs",
+		"version": "node version-bump.mjs && git add manifest.json versions.json"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MarkusLitz/obsidian-journalify.git"
+	},
+	"homepage": "https://github.com/MarkusLitz/obsidian-journalify#readme",
+	"bugs": {
+		"url": "https://github.com/MarkusLitz/obsidian-journalify/issues"
+	},
+	"keywords": [
+		"obsidian",
+		"obsidian-plugin",
+		"journal",
+		"diary",
+		"daily-notes",
+		"mood-tracker",
+		"timeline",
+		"day-one"
+	],
+	"author": "Markus Litz",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^20.11.0",
+		"esbuild": "0.21.5",
+		"obsidian": "^1.14.4",
+		"tslib": "2.6.2",
+		"typescript": "5.4.5"
+	}
+}

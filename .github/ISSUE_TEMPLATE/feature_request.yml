@@ -1,0 +1,16 @@
+name: Feature request
+description: Suggest a layout, theme, metadata feature, or importer improvement for Journalify
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature description
+      description: Describe the feature and how it helps your journaling workflow in Obsidian.
+    validations:
+      required: true
+  - type: textarea
+    id: markdown-example
+    attributes:
+      label: Example Markdown / Frontmatter (optional)
+      description: If relevant, show how your daily notes are structured.

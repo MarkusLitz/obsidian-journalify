@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a bug or unexpected behavior in Journalify
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Please describe the bug and what you expected to happen instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Journalify feed view
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS (macOS / Windows / Linux / iOS / Android), Obsidian version, Journalify version
+      placeholder: macOS 15, Obsidian 1.8.9, Journalify 0.1.0
+    validations:
+      required: true
