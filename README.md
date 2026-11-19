@@ -2,7 +2,7 @@
 
 **Journalify** turns your plain Markdown daily notes into an interactive diary feed, vertical timeline, or two-page book view directly inside Obsidian — with **`0` runtime dependencies**, full **Desktop & Mobile** support, and zero proprietary lock-in.
 
-![Journalify preview](./docs/screenshot.jpg)
+![Journalify — Obsidian Native Dark Feed & Interactive Mood/Weather Picker](./docs/screenshot.jpg)
 
 ---
 
@@ -29,6 +29,32 @@
   - Color-coded monthly mood calendar, pure-SVG mood & activity trend line, writing streak counter, deduplicated photo gallery with zoomable lightbox, native audio/video players, and *"On this day"* memories from previous years.
 - **Zero-Dependency Day One Importer (`.zip` & `.json`)**
   - Built-in pure-TypeScript RFC 1951 ZIP/DEFLATE extractor imports Day One `.zip` and `.json` exports (entries, photos, audio, video, weather, places, tags, favorites) on both Desktop and Mobile with UUID duplicate protection.
+
+---
+
+## Theme Editions
+
+Every built-in theme supports both **Light** and **Dark** mode and can be switched anytime in **Settings → Journalify**.
+
+| Obsidian Native (Default) | Warm Cozy (Natural & Soft) |
+| :---: | :---: |
+| ![Obsidian Native theme](./docs/screenshot.jpg) | ![Warm Cozy theme](./docs/theme-cozy.jpg) |
+| **Clean Minimal** | **Creative Retro Scrapbook** |
+| ![Clean Minimal theme](./docs/theme-minimal.jpg) | ![Creative Retro Scrapbook theme](./docs/theme-scrapbook.jpg) |
+| **Classic Editorial Magazine** | **Typewriter & Field Logbook** |
+| ![Classic Editorial Magazine theme](./docs/theme-editorial.jpg) | ![Typewriter and Field Logbook theme](./docs/theme-typewriter.jpg) |
+
+---
+
+## Switchable Layouts & Live Split Sync
+
+| Vertical Timeline | Two-Page Book View |
+| :---: | :---: |
+| ![Vertical Timeline layout](./docs/layout-timeline.jpg) | ![Two-Page Book View layout](./docs/layout-book.jpg) |
+
+### Live Split-Editor Sync (Markdown Source ↔ Diary Card)
+
+![Live Split-Sync between Markdown source and Journalify diary view](./docs/layout-split-sync.jpg)
 
 ---
 
