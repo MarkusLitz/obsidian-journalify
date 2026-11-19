@@ -261,6 +261,7 @@ export async function importDayOneArchive(
 		let firstPhotoName: string | null = null;
 
 		if (zip) {
+			const archive = zip;
 			const extractGroup = async (
 				items: Array<{ identifier: string; md5?: string; type?: string }> | undefined,
 				folderHint: string,
@@ -284,12 +285,10 @@ export async function importDayOneArchive(
 					);
 
 					if (!app.vault.getAbstractFileByPath(vaultMediaPath)) {
-						const bytes = await zip!.readBytes(zipEntryPath);
-						const ab = bytes.buffer.slice(
-							bytes.byteOffset,
-							bytes.byteOffset + bytes.byteLength
-						) as ArrayBuffer;
-						await app.vault.createBinary(vaultMediaPath, ab);
+						const bytes = await archive.readBytes(zipEntryPath);
+						const copy = new Uint8Array(bytes.byteLength);
+						copy.set(bytes);
+						await app.vault.createBinary(vaultMediaPath, copy.buffer);
 						report.extractedAttachments++;
 					}
 

@@ -5,6 +5,12 @@ All notable changes to **Journalify** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-11-19
+
+### Changed
+- Migrated settings tab to Obsidian 1.13+ declarative `getSettingDefinitions()` API (enables native Obsidian Settings Search, vault folder/file suggesters, sidebar book icon, and `setDestructive()` button styling).
+- Resolved all Obsidian community scanner TypeScript warnings (typed `processFrontMatter` callbacks, typed `MetadataCache` frontmatter access, removed unnecessary type assertions).
+
 ## [0.1.0] - 2026-11-19
 
 ### Added

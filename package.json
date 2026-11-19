@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-journalify",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Interactive diary feed, vertical timeline, and two-page book view for Obsidian daily notes with mood & weather tracking, media galleries, and Day One import",
 	"main": "main.js",
 	"scripts": {

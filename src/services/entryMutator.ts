@@ -14,7 +14,7 @@ export class EntryMutator {
 
 	async setMood(file: TFile, moodValue: string | null): Promise<void> {
 		const key = this.getMapping().moodKey || "mood";
-		await this.app.fileManager.processFrontMatter(file, (fm) => {
+		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
 			if (!moodValue || !moodValue.trim()) {
 				delete fm[key];
 			} else {
@@ -25,7 +25,7 @@ export class EntryMutator {
 
 	async setWeather(file: TFile, weatherValue: string | null): Promise<void> {
 		const key = this.getMapping().weatherKey || "weather";
-		await this.app.fileManager.processFrontMatter(file, (fm) => {
+		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
 			if (!weatherValue || !weatherValue.trim()) {
 				delete fm[key];
 			} else {
@@ -37,7 +37,7 @@ export class EntryMutator {
 	async setLocations(file: TFile, locations: string[]): Promise<void> {
 		const key = this.getMapping().locationKey || "location";
 		const cleaned = locations.map((s) => s.trim()).filter(Boolean);
-		await this.app.fileManager.processFrontMatter(file, (fm) => {
+		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
 			if (cleaned.length === 0) {
 				delete fm[key];
 			} else if (cleaned.length === 1) {
@@ -51,7 +51,7 @@ export class EntryMutator {
 	async setPeople(file: TFile, people: string[]): Promise<void> {
 		const key = this.getMapping().peopleKey || "people";
 		const cleaned = people.map((s) => s.trim()).filter(Boolean);
-		await this.app.fileManager.processFrontMatter(file, (fm) => {
+		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
 			if (cleaned.length === 0) {
 				delete fm[key];
 			} else if (cleaned.length === 1) {
@@ -64,7 +64,7 @@ export class EntryMutator {
 
 	async toggleStarred(file: TFile, nextStarred: boolean): Promise<void> {
 		const key = this.getMapping().starredKey || "starred";
-		await this.app.fileManager.processFrontMatter(file, (fm) => {
+		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
 			if (nextStarred) {
 				fm[key] = true;
 			} else {

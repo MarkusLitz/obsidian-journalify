@@ -125,7 +125,8 @@ export class JournalIndex {
 				if (clean) tagSet.add(clean);
 			}
 		}
-		const fmTags = cache?.frontmatter?.tags ?? cache?.frontmatter?.tag;
+		const fmRecord = cache?.frontmatter as Record<string, unknown> | undefined;
+		const fmTags: unknown = fmRecord?.tags ?? fmRecord?.tag;
 		if (Array.isArray(fmTags)) {
 			for (const rawT of fmTags) {
 				const clean = String(rawT).replace(/^#+/, "").trim();
