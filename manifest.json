@@ -1,7 +1,7 @@
 {
 	"id": "journalify",
 	"name": "Journalify",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"minAppVersion": "1.13.0",
 	"description": "Turn daily notes into an interactive diary feed, vertical timeline, or two-page book view with mood & weather tracking, photo galleries, calendar insights, and Day One import.",
 	"author": "Markus Litz",

@@ -221,7 +221,7 @@ test("JournalIndex indexes MetadataCache entries, hides 0-byte files, computes s
 		return f;
 	};
 
-	const files = [
+	const journalFiles = [
 		makeFile("Journal/2026-11-18.md", 120, "Today note", {
 			frontmatter: { mood: "😊", location: "Berlin", starred: true },
 			tags: [{ tag: "#autumn" }],
@@ -230,16 +230,43 @@ test("JournalIndex indexes MetadataCache entries, hides 0-byte files, computes s
 			frontmatter: { mood: "😌" },
 		}),
 		makeFile("Journal/2026-11-16.md", 0, "", {}),
-		makeFile("Journal/2025-11-18.md", 200, "Last year memory on Nov 18", {
-			frontmatter: { mood: "🤩" },
-		}),
 	];
+	const archivedFile = makeFile("Journal/Archive/2025-11-18.md", 200, "Last year memory on Nov 18", {
+		frontmatter: { mood: "🤩" },
+	});
+	const unrelatedVaultFile = makeFile("Projects/2026-11-15.md", 150, "Outside journal folder", {
+		frontmatter: { mood: "😐" },
+	});
 
-	const byPath = new Map(files.map((f) => [f.path, f]));
+	const archiveFolder = new mod.TFolder();
+	archiveFolder.path = "Journal/Archive";
+	archiveFolder.children = [archivedFile];
+
+	const journalFolder = new mod.TFolder();
+	journalFolder.path = "Journal";
+	journalFolder.children = [...journalFiles, archiveFolder];
+
+	const projectsFolder = new mod.TFolder();
+	projectsFolder.path = "Projects";
+	projectsFolder.children = [unrelatedVaultFile];
+
+	const rootFolder = new mod.TFolder();
+	rootFolder.path = "/";
+	rootFolder.children = [journalFolder, projectsFolder];
+
+	const foldersByPath = new Map([
+		["/", rootFolder],
+		["Journal", journalFolder],
+		["Journal/Archive", archiveFolder],
+		["Projects", projectsFolder],
+	]);
+	const allFiles = [...journalFiles, archivedFile, unrelatedVaultFile];
+	const byPath = new Map(allFiles.map((f) => [f.path, f]));
+
 	const mockApp = {
 		vault: {
-			getMarkdownFiles: () => files,
-			getAbstractFileByPath: (p) => byPath.get(p) ?? null,
+			getFolderByPath: (p) => foldersByPath.get(p) ?? null,
+			getAbstractFileByPath: (p) => byPath.get(p) ?? foldersByPath.get(p) ?? null,
 			cachedRead: async (f) => f._content,
 		},
 		metadataCache: {
@@ -249,6 +276,7 @@ test("JournalIndex indexes MetadataCache entries, hides 0-byte files, computes s
 
 	const settings = structuredClone(mod.DEFAULT_SETTINGS);
 	settings.profiles[0].folder = "Journal";
+	settings.profiles[0].includeSubfolders = true;
 	settings.profiles[0].autoSyncDailyNotesConfig = false;
 
 	const index = new mod.JournalIndex(mockApp, () => settings);
@@ -256,6 +284,7 @@ test("JournalIndex indexes MetadataCache entries, hides 0-byte files, computes s
 
 	const visible = index.getAllEntries("desc", false);
 	assert.equal(visible.length, 3);
+	assert.equal(index.getEntryByPath("Projects/2026-11-15.md"), undefined);
 
 	const streak = index.getCurrentStreak(new Date(2026, 10, 18, 12, 0, 0), true);
 	assert.equal(streak, 2);
@@ -275,6 +304,10 @@ test("JournalIndex indexes MetadataCache entries, hides 0-byte files, computes s
 	);
 	assert.equal(filtered.length, 1);
 	assert.equal(filtered[0].dateKey, "2026-11-18");
+
+	settings.profiles[0].includeSubfolders = false;
+	index.rebuild();
+	assert.equal(index.getAllEntries("desc", false).length, 2);
 });
 
 function buildTestZipBuffer(entries) {

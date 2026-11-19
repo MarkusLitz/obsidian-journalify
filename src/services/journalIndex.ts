@@ -1,4 +1,4 @@
-import { App, CachedMetadata, TFile } from "obsidian";
+import { App, CachedMetadata, TFile, TFolder } from "obsidian";
 import {
 	JournalEntryIndexItem,
 	JournalFilterState,
@@ -61,8 +61,8 @@ export class JournalIndex {
 
 	rebuild(): void {
 		this.entriesByPath.clear();
-		const files = this.app.vault.getMarkdownFiles();
 		const source = this.getActiveSource();
+		const files = this.collectSourceFiles(source);
 		for (const file of files) {
 			const item = this.buildIndexItem(file, source);
 			if (item) {
@@ -70,6 +70,31 @@ export class JournalIndex {
 			}
 		}
 		this.emitChange();
+	}
+
+	private collectSourceFiles(source: EffectiveJournalSource): TFile[] {
+		const folderPath = source.folder || "/";
+		const rootFolder = this.app.vault.getFolderByPath(folderPath);
+		if (!rootFolder) {
+			return [];
+		}
+
+		const files: TFile[] = [];
+		const stack: TFolder[] = [rootFolder];
+		while (stack.length > 0) {
+			const current = stack.pop();
+			if (!current) continue;
+			for (const child of current.children) {
+				if (child instanceof TFile) {
+					if (child.extension.toLowerCase() === "md") {
+						files.push(child);
+					}
+				} else if (source.includeSubfolders && child instanceof TFolder) {
+					stack.push(child);
+				}
+			}
+		}
+		return files;
 	}
 
 	updateFile(file: TFile): void {
@@ -125,7 +150,7 @@ export class JournalIndex {
 				if (clean) tagSet.add(clean);
 			}
 		}
-		const fmRecord = cache?.frontmatter as Record<string, unknown> | undefined;
+		const fmRecord: Record<string, unknown> | undefined = cache?.frontmatter;
 		const fmTags: unknown = fmRecord?.tags ?? fmRecord?.tag;
 		if (Array.isArray(fmTags)) {
 			for (const rawT of fmTags) {

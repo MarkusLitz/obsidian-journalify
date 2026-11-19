@@ -5,6 +5,14 @@ All notable changes to **Journalify** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-11-19
+
+### Changed
+- Scoped journal indexing in `src/services/journalIndex.ts` to the configured journal folder via `vault.getFolderByPath()` instead of vault-wide `vault.getMarkdownFiles()`, eliminating whole-vault file enumeration.
+
+### Fixed
+- Removed the remaining unnecessary type assertion in `src/services/journalIndex.ts` to achieve zero Obsidian community scanner warnings.
+
 ## [0.1.1] - 2026-11-19
 
 ### Changed
